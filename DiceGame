@@ -1,0 +1,52 @@
+"""Generates two random numbers from 1 to 6."""
+import random
+
+# Constants for the game
+INITIAL_POINTS = 100
+WINNING_SUM = 7
+JACKPOT_MULTIPLIER = 4
+
+points = INITIAL_POINTS  # Player starts with 100 pts
+
+
+def dice_throw_summ():
+    """Generate two random numbers simulating dice throws.
+
+    Return the sum of two numbers.
+    """
+    result = [random.randint(1, 6) for _ in range(2)]  # Two dice are thrown
+    return sum(result)
+
+
+def check_win_condition(player_input, bet):
+    """Check if player should receive or lose points.
+    
+    Adjust points based on game rules.
+    """
+    global points
+    com_turn = dice_throw_summ()
+    print(f"Your opponent's result: {com_turn}")
+    if ((player_input > WINNING_SUM and com_turn > WINNING_SUM) or
+            (player_input < WINNING_SUM and com_turn < WINNING_SUM)):
+        points += bet  # Adds player bet to tally
+    if player_input == com_turn:
+        points += bet * JACKPOT_MULTIPLIER  # Jackpot
+    else:
+        points -= bet  # Substracts player bet from tally
+    print(f"Your points: {points}")  # Prints player's total points
+
+
+while points > 0:
+    prediction = int(input("Throw your dice (2-12): "))
+    bet = int(input(f"Place your bets (total of {points} points available): "))
+    if bet > points:
+        print("Not enough points!")
+        continue
+    check_win_condition(prediction, bet)
+    prompt = input("Continue? (yes/no): ")
+    if prompt.lower() in ("no", "n"):
+        print("Thanks for playing!")
+        break
+
+if points <= 0:
+    print("You now have 0 points! Too bad!")
