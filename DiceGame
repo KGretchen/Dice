@@ -23,24 +23,28 @@ def check_win_condition(player_input, bet):
 
     Adjust points based on game rules.
     """
-    global points
-    com_turn = dice_throw_summ()
-    print(f"Your opponent's result: {com_turn}")
-    if ((player_input > WINNING_SUM and com_turn > WINNING_SUM) or
-            (player_input < WINNING_SUM and com_turn < WINNING_SUM)):
+    points = INITIAL_POINTS
+    dice_summ = dice_throw_summ()
+    print(f"Your opponent's result: {dice_summ}")
+    if ((player_input > WINNING_SUM and dice_summ > WINNING_SUM) or
+            (player_input < WINNING_SUM and dice_summ < WINNING_SUM)):
         points += bet  # Adds player bet to tally
-    if player_input == com_turn:
+    elif player_input == dice_summ:
         points += bet * JACKPOT_MULTIPLIER  # Jackpot
     else:
         points -= bet  # Substracts player bet from tally
     print(f"Your points: {points}")  # Prints player's total points
+    return points 
 
 
 while points > 0:
     prediction = int(input("Throw your dice (2-12): "))
     bet = int(input(f"Place your bets (total of {points} points available): "))
+    if not 1 < prediction < 13:
+        print("Please input a number from 2 to 12!")
+        continue
     if bet > points:
-        print("Not enough points!")
+        print("Not enough points or invalid bet!")
         continue
     check_win_condition(prediction, bet)
     prompt = input("Continue? (yes/no): ")
