@@ -20,7 +20,7 @@ def dice_throw_summ():
 
 def check_win_condition(player_input, bet):
     """Check if player should receive or lose points.
-    
+
     Adjust points based on game rules.
     """
     global points
